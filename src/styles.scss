@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+    height: 100%;
+}
+body {
+    font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
+    background-color: hsl(283, 30%, 7%);
+    color: hsl(47, 47%, 55%);
+    outline: 1px solid rgba(0,0,255,0.5);
+    margin: 0;
+}

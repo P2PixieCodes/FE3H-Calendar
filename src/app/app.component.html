@@ -1,0 +1,146 @@
+<!-- <pre>{{jsonData | json}}</pre> -->
+<div *ngIf="!initialized" id="loading-container">
+    <div>Loading Images</div>
+    <div class="lds-ripple"><div></div><div></div></div>
+</div>
+<div class="main-container" *ngIf="initialized">
+    <ng-container *ngTemplateOutlet="details"></ng-container>
+    <ng-container *ngTemplateOutlet="calendar"></ng-container>
+</div>
+
+<ng-template #calendar>
+    <div class="calendar-container" appScaleToFraction>
+        <div class="calendar">
+            <ng-container *ngFor="let part of jsonData.parts">
+                <div class="story-part">
+                    <div class="title">{{part.title}}</div>
+                    <ng-container *ngFor="let month of part.months">
+                        <div class="month">
+                            <div class="month-header">
+                                <div class="month-number" [ngClass]="month.season">
+                                    <ng-container *ngFor="let char of month.monthId.toString().split('')">
+                                        <img [src]="'/assets/big-'+char+'.png'">
+                                    </ng-container>
+                                </div>
+                                <div class="month-banner">
+                                    <img src="/assets/banner-month-sigil.png" class="banner-sigil">
+                                    <div class="month-name">{{jsonData.moons[month.monthId]}}</div>
+                                </div>
+                                <div class="month-note">
+                                    {{month.note}}
+                                </div>
+                            </div>
+                            <div class="month-calendar" [ngClass]="(month.weeks === 5) ? 'month-calendar-five-weeks' : 'month-calendar-six-weeks'">
+                                <div class="weekdays">
+                                    <ng-container *ngFor="let day of [1,2,3,4,5,6,7]">
+                                        <div class="weekday">
+                                            <img [src]="'/assets/day-'+day+'.png'">
+                                        </div>
+                                    </ng-container>
+                                </div>
+                                <div class="date-row" *ngFor="let row of [1,2,3,4,5]">
+                                    <ng-container *ngTemplateOutlet="week; context: {row: row, month: month}"></ng-container>
+                                </div>
+                                <div class="date-row" *ngIf="month.weeks === 6">
+                                    <ng-container *ngTemplateOutlet="week; context: {row: 6, month: month}"></ng-container>
+                                </div>
+                            </div>
+                            <div *ngIf="!!month.tournament" class="month-tournament">
+                                <div class="tournament-category">Ongoing Event: {{month.tournament.weapon}} Tournament</div>
+                                <div class="tournament-reward-container">
+                                    <div *ngIf="!!month.tournament.reward" class="tournament-reward">
+                                        <span class="reward-prefix">Reward </span>
+                                        <img [src]="'/assets/inventory-'+month.tournament.icon+'.png'">
+                                        <span class="reward-description">{{month.tournament.reward}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #week let-row="row" let-month="month">
+    <ng-container *ngFor="let weekday of [0,1,2,3,4,5,6]">
+        <div class="date">
+            <div *ngIf="month.days[weekday + (row - 1)*7] as day" class="day-cell" 
+              (click)="selectToggle(month,day,$event)" 
+              [ngClass]="(month === selectedMonth && day === selectedDay) ? 'selected-day' : ''">
+                <div class="date-header" >
+                    <ng-container *ngFor="let char of day.date.toString().split('')">
+                        <img [src]="'/assets/small-'+char+'.png'">
+                    </ng-container>
+                </div>
+                <div class="date-events" *ngIf="!!day.events">
+                    <div *ngIf="!!day.events.note" class="icon-note">
+                        <img src="/assets/icon-note.png">
+                    </div>
+                    <div *ngIf="!!day.events.story" class="story-event">
+                        <img  src="/assets/icon-event.png">
+                    </div>
+                    <img *ngIf="!!day.events.holiday" src="/assets/icon-holiday.png" class="holiday">
+                    <img *ngIf="!!day.events.birthday" src="/assets/icon-birthday-yellow.png" class="birthday">
+                    <img *ngIf="!!day.events.monster" src="/assets/icon-monster.png">
+                    <img *ngIf="!!day.events.paralogues" src="/assets/icon-paralogue.png">
+                    <img *ngIf="!!day.events.fish" src="/assets/icon-fishing.png">
+                    <img *ngIf="!!day.events.gardening" src="/assets/icon-gardening.png">
+                    <img *ngIf="!!day.events.meal" src="/assets/icon-meals.png">
+                    <img *ngIf="!!day.events.choir" src="/assets/icon-choir.png">
+                    <img *ngIf="!!day.events.battle" src="/assets/icon-battle.png" class="battle-event">
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>
+
+<ng-template #details>
+    <div class="details-container" appScaleToFraction>
+        <div class="details-title">
+            <ng-container *ngIf="!!selectedDay && !!selectedMonth">
+                <ng-container *ngFor="let char of selectedMonth.monthId.toString().split('')">
+                    <img [src]="'/assets/small-'+char+'-emph.png'">
+                </ng-container>
+                <img src="/assets/small-slash-emph.png">
+                <ng-container *ngFor="let char of selectedDay.date.toString().split('')">
+                    <img [src]="'/assets/small-'+char+'-emph.png'">
+                </ng-container>
+                <div class="year">
+                    <img src="/assets/small-slash.png">
+                    <ng-container *ngFor="let char of selectedMonth.year.toString().split('')">
+                        <img [src]="'/assets/small-'+char+'.png'">
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+        <div class="details-content-wrapper">
+            <div *ngIf="!selectedDay" class="placeholder">No date selected.</div>
+            <div *ngIf="!!selectedDay" class="details-content">
+                <div *ngIf="!selectedDay.events" class="events-placeholder">No events that day.</div>
+                <ng-container *ngIf="!!selectedDay.events">
+                    <div class="details-content-header">
+                        <p>Events</p>
+                        <div class="details-sep"></div>
+                    </div>
+                    <ul>
+                        <li *ngIf="!!selectedDay.events.note" class="event-note"><span>{{selectedDay.events.note}}</span></li>
+                        <li *ngIf="!!selectedDay.events.story" class="event-story"><span>{{selectedDay.events.story}}</span></li>
+                        <li *ngIf="!!selectedDay.events.holiday" class="event-holiday"><span>{{selectedDay.events.holiday}}</span></li>
+                        <li *ngIf="!!selectedDay.events.birthday" class="event-birthday"><span>{{selectedDay.events.birthday}}'s Birthday</span></li>
+                        <li *ngIf="!!selectedDay.events.monster" class="event-monster"><span>Rare Monster Sighting</span></li>
+                        <ng-container  *ngIf="!!selectedDay.events.paralogues">
+                            <li *ngFor="let paralogue of selectedDay.events.paralogues" class="event-paralogue"><span>{{paralogue}}</span></li>
+                        </ng-container>
+                        <li *ngIf="!!selectedDay.events.fish" class="event-fish"><span>{{selectedDay.events.fish}}</span></li>
+                        <li *ngIf="!!selectedDay.events.gardening" class="event-gardening"><span>Blessing of the Land</span></li>
+                        <li *ngIf="!!selectedDay.events.meal" class="event-meal"><span>{{selectedDay.events.meal}}</span></li>
+                        <li *ngIf="!!selectedDay.events.choir" class="event-choir"><span>Choir Festival</span></li>
+                        <li *ngIf="!!selectedDay.events.battle" class="event-battle"><span>{{selectedDay.events.battle}}</span></li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>

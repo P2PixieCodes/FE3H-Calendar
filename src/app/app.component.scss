@@ -1,0 +1,512 @@
+$parts-sep: 50px;
+$month-sep: 25px;
+
+$cal-bg-width: 1054px;
+$cal-bg-height-6w: 748px;
+$cal-bg-height-5w: 718px;
+$tourn-bg-height: 76px;
+
+$month-number-bg-width: 240px;
+
+$move-cal-up: calc(-0.6 * $month-number-bg-width);
+
+$banner-sigil-dim: 60px;
+$banner-height: 53px;
+
+$cal-pad-left: 38px;
+$cal-pad-top-6w: 100px;
+$cal-pad-top-5w: 130px;
+$cal-pad-bottom: 80px;
+
+$date-width: 118px;
+$date-height: 98px;
+$sunday-width: 236px;
+
+$weekday-sep: 5px;
+$row-sep: 2px;
+$col-sep: 2px;
+
+$date-num-height: 26px;
+
+$icon-event-dim: 84px;
+$icon-event-scale: 0.45;
+$icon-event-container-dim: calc($icon-event-dim * $icon-event-scale);
+$icon-event-scale-move: calc(-1 * ($icon-event-dim - $icon-event-dim * $icon-event-scale) / 2);
+
+$icon-note-dim: 56px;
+$icon-note-scale: 0.6;
+$icon-note-container-dim: calc($icon-note-dim * $icon-note-scale);
+$icon-note-scale-move: calc(-1 * ($icon-note-dim - $icon-note-dim * $icon-note-scale) / 2);
+
+$details-dim: 718px;
+
+@mixin centerRow() {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+@mixin centerColumn() {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-container {
+    @include centerRow();
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.calendar-container {
+    overflow-y: auto;
+    overflow-x: visible;
+    height: 100%;
+    flex: 1 1 60%;
+}
+.details-container {
+    overflow-x: auto;
+    flex: 1 1 40%;
+    height: 100%;
+    @include centerColumn();
+    .details-title {
+        height: 60px;
+        @include centerRow();
+        .year {
+            @include centerRow();
+            filter: brightness(100%) sepia(0) opacity(.7);
+        }
+    }
+    .details-content-wrapper {
+        width: $details-dim;
+        height: $details-dim;
+        background-image: url("/assets/calendar-details-bg.png");
+        color: hsl(53, 44%, 10%);
+        .placeholder {
+            height: 100%;
+            width: 100%;
+            font-size: 32px;
+            @include centerColumn();
+        }
+        .details-content {
+            font-size:x-large;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            .events-placeholder {
+                height: 100%;
+                width: 100%;
+                font-size: 32px;
+                @include centerColumn();
+            }
+            .details-content-header {
+                p {
+                    margin: 20px 30px;
+                }
+                .details-sep {
+                    width: 400px;
+                    border: 1px solid hsla(53, 10%, 80%);
+                    // can i replace this class with an image? should i?
+                }
+            }
+            ul {
+                width: calc(100% - 70px);
+                margin-left: 30px;
+                overflow-y: auto;
+                li {
+                    list-style-position: outside;
+                    line-height: 2;
+                    padding-right: 30px;
+                    span {
+                        display: inline-block;
+                        vertical-align: top;
+                        border-bottom: 2px dotted hsl(53, 44%, 10%);
+                        margin-bottom: 10px;
+                        width: 100%;
+                    } 
+                }
+            }
+
+            li.event-note {
+                list-style-image: url("/assets/icon-note_li_24px.png");
+                // this icon makes me think that this is a dialogue event (AKA story)
+                // TODO: pick a different icon
+            }
+            li.event-story {
+                list-style-image: url("/assets/icon-event_li_24px.png");
+            }
+            li.event-holiday {
+                list-style-image: url("/assets/icon-holiday_li_24px.png");
+            }
+            li.event-birthday {
+                list-style-image: url("/assets/icon-birthday-yellow_li_24px.png");
+            }
+            li.event-monster {
+                list-style-image: url("/assets/icon-monster_li_24px.png");
+            }
+            li.event-paralogue {
+                list-style-image: url("/assets/icon-paralogue_li_24px.png");
+            }
+            li.event-fish {
+                list-style-image: url("/assets/icon-fishing_li_24px.png");
+            }
+            li.event-gardening {
+                list-style-image: url("/assets/icon-gardening_li_24px.png");
+            }
+            li.event-meal {
+                list-style-image: url("/assets/icon-meals_li_24px.png");
+            }
+            li.event-choir {
+                list-style-image: url("/assets/icon-choir_li_24px.png");
+            }
+            li.event-battle {
+                list-style-image: url("/assets/icon-battle_li_24px.png");
+            }
+        }
+    }
+}
+
+.story-part {
+    @include centerColumn();
+    justify-content: unset;
+    margin-bottom: $parts-sep;
+    .title {
+        color: #ccc;
+        font-size: 32px;
+    }
+}
+.story-part:first-of-type {
+    margin-top: calc($parts-sep/2);
+}
+
+
+.month {
+    @include centerColumn();
+    justify-content: unset;
+    margin-top: $month-sep;
+    .month-header {
+        position: relative;
+        width: 100%;
+        z-index: 2;
+        @include centerColumn();
+        justify-content: unset;
+
+        .month-number {
+            height: $month-number-bg-width;
+            width: $month-number-bg-width;
+            @include centerRow()
+        }
+        .month-number.spring {
+            background-image: url("/assets/month-bg-spring.png");
+        }
+        .month-number.summer {
+            background-image: url("/assets/month-bg-summer.png");
+        }
+        .month-number.fall {
+            background-image: url("/assets/month-bg-fall.png");
+        }
+        .month-number.winter {
+            background-image: url("/assets/month-bg-winter.png");
+        }
+        .month-banner::before {
+            content: url("/assets/banner-month-left.png");
+            vertical-align: top;
+        }
+        .month-banner {
+            position: relative;
+            z-index: 3;
+            top: calc(-0.2 * $month-number-bg-width);
+            height: $banner-height;
+            background-image: url("/assets/banner-month-middle.png");
+            .banner-sigil {
+                position: absolute;
+                z-index: 4;
+                left: calc(50% - $banner-sigil-dim/2);
+                top: calc(-0.2 * $banner-sigil-dim);
+            }
+            .month-name {
+                display: inline;
+                position: relative;
+                z-index: 5;
+                top: 3px;
+                font-weight:800;
+                font-size: 24px;
+                color: hsl(44, 45%, 70%);
+                -webkit-text-stroke: .5px hsl(44, 20%, 30%);
+            }
+        }
+        .month-banner::after {
+            content: url("/assets/banner-month-right.png");
+            vertical-align: top;
+        }
+        .month-note {
+            width: calc($cal-bg-width / 2 - $month-number-bg-width / 2 - 100px);
+            height: calc($month-number-bg-width/3);
+            position: absolute;
+            right: 50px;
+            top: 50px;
+            font-style: italic;
+            font-weight: bolder;
+            color: hsl(44, 40%, 45%);
+            margin: 5px 0 10px;
+            text-shadow: 2px 2px 2px black;
+            text-align: center;
+            @include centerRow();
+        }
+    }
+
+
+
+    .month-calendar {
+        position: relative;
+        z-index: 1;
+        top: $move-cal-up;
+        margin-bottom: $move-cal-up;
+        width: $cal-bg-width;
+        image-rendering: crisp-edges;
+        .weekdays, .date-row {
+            image-rendering: auto;
+            margin-left: $cal-pad-left;
+            .weekday, .date {
+                display: inline-block;
+                width: $date-width;
+                object-fit: none;
+                text-align: center;
+                margin-right: $col-sep;
+            }
+            .weekday:last-child, .date:last-child {
+                width: $sunday-width;
+            }
+            .weekday:last-child, .date:last-child .date-header {
+                filter: brightness(50%) sepia(100) saturate(100) hue-rotate(25deg);
+            }
+        }
+        .weekdays {
+            padding-bottom: $weekday-sep;
+            .weekday {
+                transform: scale(0.75);
+            }
+        }
+        .date-row {
+            height: $date-height;
+            margin-bottom: $row-sep;
+            .date {
+                height: $date-height;
+                vertical-align: top;
+                .day-cell {
+                    height: $date-height;
+                    .date-header {
+                        height: $date-num-height;
+                        @include centerRow();
+                        img {
+                            transform: scale(0.75);
+                        }
+                    }
+                    .date-events {
+                        image-rendering: auto;
+                        filter: none !important;
+                        @include centerRow();
+                        height: calc($date-height - $date-num-height);
+                        overflow: auto; // use to catch weird positions
+                        > * {
+                            margin: 0 2px;
+                        }
+                        .holiday {
+                            margin: 0 4px;
+                        }
+                        .birthday {
+                            margin: 0 6px;
+                        }
+                        > *:last-child {
+                            margin-right: 0;
+                        }
+                        .icon-note {
+                            height: $icon-note-container-dim;
+                            width: $icon-note-container-dim;
+                            overflow: hidden;
+                            img {
+                                transform: scale($icon-note-scale);
+                                position: relative;
+                                top: $icon-note-scale-move;
+                                left: $icon-note-scale-move;
+                            }
+                        }
+                        .story-event {
+                            height: $icon-event-container-dim;
+                            width: $icon-event-container-dim;
+                            overflow: hidden;
+                            img {
+                                transform: scale($icon-event-scale);
+                                position: relative;
+                                top: $icon-event-scale-move;
+                                left: $icon-event-scale-move;
+                            }
+                        }
+                    }
+                }
+                .day-cell:hover {
+                    cursor: pointer;
+                    background-color: rgba(hsl(270, 50%, 55%),  .8);
+                    border-radius: 1px;
+                    border: 1px solid hsl(264, 66%, 67%);
+                    box-shadow: 
+                        inset 0 0 20px hsl(274,48%,66%),
+                        inset 0 0 5px 1px hsl(267, 62%, 66%),
+                        0 0 1px 1px hsl(260, 55%, 63%),
+                        0 0 1px 2px hsl(255, 60%, 30%);
+                }
+                .day-cell.selected-day {
+                    background-color: rgba(hsl(260, 50%, 55%),  .8);
+                    border-radius: 1px;
+                    border: 1px solid hsl(254, 66%, 67%);
+                    box-shadow: 
+                        inset 0 0 20px hsl(264,48%,66%),
+                        inset 0 0 5px 1px hsl(257, 62%, 66%),
+                        0 0 1px 1px hsl(250, 55%, 63%),
+                        0 0 1px 2px hsl(245, 60%, 30%);
+                }
+                .day-cell.selected-day:hover {
+                    box-shadow: 
+                        inset 0 0 20px hsl(264,48%,61%),
+                        inset 0 0 5px 1px hsl(257, 62%, 61%),
+                        0 0 1px 1px hsl(250, 55%, 58%),
+                        0 0 1px 2px hsl(245, 60%, 25%),
+                        0 0 5px 3px hsl(240, 70%, 20%);
+                }
+            }
+            .date:not(.date:last-child) .date-header:last-child { // no events that day
+                filter: brightness(100%) sepia(0) opacity(.4);
+            }
+            .date:last-child .date-header:last-child { // no events that sunday
+                filter: brightness(50%) sepia(100) saturate(100) hue-rotate(25deg) opacity(.4);
+            }
+        }
+        .date-row:last-child {
+            margin-bottom: $cal-pad-bottom;
+        }
+    }
+    .month-calendar-six-weeks {
+        background-image: url("/assets/calendar-background_6w.png");
+        background-size: $cal-bg-width $cal-bg-height-6w; // set explicitly for rendering - necessary?
+        height: $cal-bg-height-6w;
+        .weekdays {
+            margin-top: $cal-pad-top-6w;
+        }
+    }
+    .month-calendar-five-weeks {
+        background-image: url("/assets/calendar-background_5w.png");
+        background-size: $cal-bg-width $cal-bg-height-5w; // set explicitly for rendering - necessary?
+        height: $cal-bg-height-5w;
+        .weekdays {
+            margin-top: $cal-pad-top-5w;
+        }
+    }
+
+    .month-tournament {
+        background-image: url("/assets/ongoing-event-banner.png");
+        height: $tourn-bg-height;
+        width: $cal-bg-width;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-size: x-large;
+        .tournament-category {
+            color: hsl(53, 44%, 10%);
+            flex: 0 0 calc(565px - 11px - 10px);
+            padding-left: 11px;
+            padding-right: 10px;
+            text-align: center;
+        }
+        .tournament-reward-container {
+            flex: 0 0 calc($cal-bg-width - 565px - 20px);
+            padding-left: 20px;
+            height: 47px;
+            overflow: hidden;
+            .tournament-reward {
+                color: #ddd;
+                display: inline;
+                height: 47px;
+                overflow: hidden;
+                position: relative;
+                top: -23.5px;
+                .reward-prefix {
+                    padding: 0 20px;
+                    font-size: smaller;
+                    color: hsl(44, 45%, 70%);
+                }
+                img {
+                    transform: scale(0.5);
+                    vertical-align: middle;
+                    position: relative;
+                    top: -2px;
+                }
+                .reward-description {
+                    font-weight: bolder;
+                    position: relative;
+                    left: -10px;
+                }
+            }
+        }
+    }
+}
+
+#loading-container {
+    @include centerColumn();
+    height: 100%;
+    width: 100%;
+    font-size: 34px;
+}
+
+// COPIED FROM https://loading.io/css/
+.lds-ripple {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-ripple div {
+    position: absolute;
+    border: 4px solid hsl(47, 47%, 55%);
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  }
+  .lds-ripple div:nth-child(2) {
+    animation-delay: -1s;
+  }
+  @keyframes lds-ripple {
+    0% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+    4.9% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+    5% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 0px;
+      left: 0px;
+      width: 72px;
+      height: 72px;
+      opacity: 0;
+    }
+  }
+  
