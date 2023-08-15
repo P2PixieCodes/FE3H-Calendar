@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { DataModel, DayModel, MonthModel } from './data-models';
@@ -20,7 +20,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     constructor(private httpClient: HttpClient, private cdref: ChangeDetectorRef) {}
 
     ngOnInit(): void {
-        firstValueFrom(this.httpClient.get<DataModel>("/assets/calendar-data.json")).then((result) => {
+        const headers: HttpHeaders = new HttpHeaders({"Accept": "application/vnd.github+json"});
+        firstValueFrom(this.httpClient.get<DataModel>("/assets/calendar-data.json",{headers})).then((result) => {
             this.jsonData = result;
             const selectMonth = result.parts[0].months[0];
             const selectDay = selectMonth.days[20];
