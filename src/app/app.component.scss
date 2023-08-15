@@ -40,138 +40,166 @@ $icon-note-scale-move: calc(-1 * ($icon-note-dim - $icon-note-dim * $icon-note-s
 
 $details-dim: 718px;
 
-@mixin centerRow() {
+#main-container {
     display: flex;
+    min-width: 5px;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
-}
-@mixin centerColumn() {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.main-container {
-    @include centerRow();
     justify-content: space-evenly;
     height: 100%;
 }
 
-.calendar-container {
-    overflow-y: auto;
-    overflow-x: visible;
+#calendar-container {
+    overflow-y: scroll;
+    overflow-x: hidden;
     height: 100%;
+    width: 60%;
     flex: 1 1 60%;
+    #calendar {
+        width: $cal-bg-width;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
-.details-container {
-    overflow-x: auto;
-    flex: 1 1 40%;
+#details-container {
+    flex: 0 1 calc(40% - 40px);
+    width: calc(40% - 40px);
+    padding: 0 20px;
     height: 100%;
-    @include centerColumn();
-    .details-title {
+    display: flex;
+    min-width: 5px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    #details-title {
+        flex-grow: 0;
         height: 60px;
-        @include centerRow();
-        .year {
-            @include centerRow();
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        #year {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
             filter: brightness(100%) sepia(0) opacity(.7);
         }
     }
-    .details-content-wrapper {
-        width: $details-dim;
-        height: $details-dim;
+    #details-content-wrapper {
+        max-width: $details-dim;
+        min-width: 5px;
+        width: 100%;
+        max-height: $details-dim; // 60px used by #details-title
+        height: calc(100% - 70px);
         background-image: url("/assets/calendar-details-bg.png");
+        background-size: cover;
+        background-repeat: no-repeat;
         color: hsl(53, 44%, 10%);
-        .placeholder {
+        border: none;
+        #placeholder {
             height: 100%;
             width: 100%;
             font-size: 32px;
-            @include centerColumn();
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        .details-content {
+        #details-content {
             font-size:x-large;
             height: 100%;
             width: 100%;
+            min-width: 0;
             display: flex;
             flex-direction: column;
-            justify-content: start;
-            .events-placeholder {
+            justify-content: flex-start;
+            #events-placeholder {
                 height: 100%;
                 width: 100%;
                 font-size: 32px;
-                @include centerColumn();
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
             }
-            .details-content-header {
+            #details-content-header {
+                flex-grow: 0;
                 p {
                     margin: 20px 30px;
                 }
-                .details-sep {
-                    width: 400px;
+                #details-sep {
+                    max-width: 400px;
                     border: 1px solid hsla(53, 10%, 80%);
                     // can i replace this class with an image? should i?
                 }
             }
-            ul {
-                width: calc(100% - 70px);
-                margin-left: 30px;
-                overflow-y: auto;
-                li {
-                    list-style-position: outside;
-                    line-height: 2;
-                    padding-right: 30px;
-                    span {
-                        display: inline-block;
-                        vertical-align: top;
-                        border-bottom: 2px dotted hsl(53, 44%, 10%);
-                        margin-bottom: 10px;
-                        width: 100%;
-                    } 
+            #event-list {
+                flex-grow: 1;
+                white-space: nowrap;
+                overflow: auto;
+                ul {
+                    width: calc(100% - 64px);
+                    margin: 24px 0 24px 24px;
+                    li {
+                        list-style-position: outside;
+                        line-height: 2;
+                        padding-right: 24px;
+                        width: calc(100% - 24px);
+                        span {
+                            display: inline-block;
+                            vertical-align: top;
+                            border-bottom: 2px dotted hsl(53, 44%, 10%);
+                            margin-bottom: 10px;
+                            width: 100%;
+                            word-break: keep-all;
+                        }
+                    }
+    
+                    li.event-note {
+                        list-style-image: url("/assets/icon-note-2_li_24px.png");
+                    }
+                    li.event-story {
+                        list-style-image: url("/assets/icon-event_li_24px.png");
+                    }
+                    li.event-holiday {
+                        list-style-image: url("/assets/icon-holiday_li_24px.png");
+                    }
+                    li.event-birthday {
+                        list-style-image: url("/assets/icon-birthday-yellow_li_24px.png");
+                    }
+                    li.event-monster {
+                        list-style-image: url("/assets/icon-monster_li_24px.png");
+                    }
+                    li.event-paralogue {
+                        list-style-image: url("/assets/icon-paralogue_li_24px.png");
+                    }
+                    li.event-fish {
+                        list-style-image: url("/assets/icon-fishing_li_24px.png");
+                    }
+                    li.event-gardening {
+                        list-style-image: url("/assets/icon-gardening_li_24px.png");
+                    }
+                    li.event-meal {
+                        list-style-image: url("/assets/icon-meals_li_24px.png");
+                    }
+                    li.event-choir {
+                        list-style-image: url("/assets/icon-choir_li_24px.png");
+                    }
+                    li.event-battle {
+                        list-style-image: url("/assets/icon-battle_li_24px.png");
+                    }
                 }
-            }
-
-            li.event-note {
-                list-style-image: url("/assets/icon-note_li_24px.png");
-                // this icon makes me think that this is a dialogue event (AKA story)
-                // TODO: pick a different icon
-            }
-            li.event-story {
-                list-style-image: url("/assets/icon-event_li_24px.png");
-            }
-            li.event-holiday {
-                list-style-image: url("/assets/icon-holiday_li_24px.png");
-            }
-            li.event-birthday {
-                list-style-image: url("/assets/icon-birthday-yellow_li_24px.png");
-            }
-            li.event-monster {
-                list-style-image: url("/assets/icon-monster_li_24px.png");
-            }
-            li.event-paralogue {
-                list-style-image: url("/assets/icon-paralogue_li_24px.png");
-            }
-            li.event-fish {
-                list-style-image: url("/assets/icon-fishing_li_24px.png");
-            }
-            li.event-gardening {
-                list-style-image: url("/assets/icon-gardening_li_24px.png");
-            }
-            li.event-meal {
-                list-style-image: url("/assets/icon-meals_li_24px.png");
-            }
-            li.event-choir {
-                list-style-image: url("/assets/icon-choir_li_24px.png");
-            }
-            li.event-battle {
-                list-style-image: url("/assets/icon-battle_li_24px.png");
             }
         }
     }
 }
 
 .story-part {
-    @include centerColumn();
-    justify-content: unset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: $parts-sep;
     .title {
         color: #ccc;
@@ -184,32 +212,41 @@ $details-dim: 718px;
 
 
 .month {
-    @include centerColumn();
-    justify-content: unset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: $month-sep;
     .month-header {
         position: relative;
         width: 100%;
         z-index: 2;
-        @include centerColumn();
-        justify-content: unset;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         .month-number {
             height: $month-number-bg-width;
             width: $month-number-bg-width;
-            @include centerRow()
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
         }
         .month-number.spring {
             background-image: url("/assets/month-bg-spring.png");
+            background-repeat: no-repeat;
         }
         .month-number.summer {
             background-image: url("/assets/month-bg-summer.png");
+            background-repeat: no-repeat;
         }
         .month-number.fall {
             background-image: url("/assets/month-bg-fall.png");
+            background-repeat: no-repeat;
         }
         .month-number.winter {
             background-image: url("/assets/month-bg-winter.png");
+            background-repeat: no-repeat;
         }
         .month-banner::before {
             content: url("/assets/banner-month-left.png");
@@ -221,6 +258,7 @@ $details-dim: 718px;
             top: calc(-0.2 * $month-number-bg-width);
             height: $banner-height;
             background-image: url("/assets/banner-month-middle.png");
+            background-repeat: no-repeat;
             .banner-sigil {
                 position: absolute;
                 z-index: 4;
@@ -254,7 +292,10 @@ $details-dim: 718px;
             margin: 5px 0 10px;
             text-shadow: 2px 2px 2px black;
             text-align: center;
-            @include centerRow();
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
         }
     }
 
@@ -280,7 +321,7 @@ $details-dim: 718px;
             .weekday:last-child, .date:last-child {
                 width: $sunday-width;
             }
-            .weekday:last-child, .date:last-child .date-header {
+            .weekday:last-child, .date:last-child .date-header img:not(.marker-img){
                 filter: brightness(50%) sepia(100) saturate(100) hue-rotate(25deg);
             }
         }
@@ -300,15 +341,35 @@ $details-dim: 718px;
                     height: $date-height;
                     .date-header {
                         height: $date-num-height;
-                        @include centerRow();
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        position: relative;
                         img {
                             transform: scale(0.75);
+                        }
+                        .marker-img.f {
+                            position: absolute;
+                            transform: scale(0.7);
+                            right: 5%;
+                            filter: none;
+                        }
+                        .marker-img.instruct {
+                            position: absolute;
+                            transform: scale(0.5);
+                            right: -15%;
+                            top: -60%;
+                            filter: none;
                         }
                     }
                     .date-events {
                         image-rendering: auto;
                         filter: none !important;
-                        @include centerRow();
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
                         height: calc($date-height - $date-num-height);
                         overflow: auto; // use to catch weird positions
                         > * {
@@ -322,17 +383,6 @@ $details-dim: 718px;
                         }
                         > *:last-child {
                             margin-right: 0;
-                        }
-                        .icon-note {
-                            height: $icon-note-container-dim;
-                            width: $icon-note-container-dim;
-                            overflow: hidden;
-                            img {
-                                transform: scale($icon-note-scale);
-                                position: relative;
-                                top: $icon-note-scale-move;
-                                left: $icon-note-scale-move;
-                            }
                         }
                         .story-event {
                             height: $icon-event-container-dim;
@@ -377,11 +427,17 @@ $details-dim: 718px;
                         0 0 5px 3px hsl(240, 70%, 20%);
                 }
             }
-            .date:not(.date:last-child) .date-header:last-child { // no events that day
+            .date:not(.date:last-child) .date-header:last-child:not(.marked-day) { // no events that day
                 filter: brightness(100%) sepia(0) opacity(.4);
             }
-            .date:last-child .date-header:last-child { // no events that sunday
-                filter: brightness(50%) sepia(100) saturate(100) hue-rotate(25deg) opacity(.4);
+            .date:last-child {
+                .date-header:last-child img:not(.marker-img){ // no events that sunday
+                    filter: brightness(50%) sepia(100) saturate(100) hue-rotate(25deg) opacity(.4);
+                }
+                .day-cell .date-header .marker-img.f {
+                    right: 25%;
+                    filter: none;
+                }
             }
         }
         .date-row:last-child {
@@ -391,6 +447,7 @@ $details-dim: 718px;
     .month-calendar-six-weeks {
         background-image: url("/assets/calendar-background_6w.png");
         background-size: $cal-bg-width $cal-bg-height-6w; // set explicitly for rendering - necessary?
+        background-repeat: no-repeat;
         height: $cal-bg-height-6w;
         .weekdays {
             margin-top: $cal-pad-top-6w;
@@ -399,6 +456,7 @@ $details-dim: 718px;
     .month-calendar-five-weeks {
         background-image: url("/assets/calendar-background_5w.png");
         background-size: $cal-bg-width $cal-bg-height-5w; // set explicitly for rendering - necessary?
+        background-repeat: no-repeat;
         height: $cal-bg-height-5w;
         .weekdays {
             margin-top: $cal-pad-top-5w;
@@ -407,6 +465,7 @@ $details-dim: 718px;
 
     .month-tournament {
         background-image: url("/assets/ongoing-event-banner.png");
+        background-repeat: no-repeat;
         height: $tourn-bg-height;
         width: $cal-bg-width;
         margin-top: 10px;
@@ -456,7 +515,10 @@ $details-dim: 718px;
 }
 
 #loading-container {
-    @include centerColumn();
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 100%;
     width: 100%;
     font-size: 34px;
